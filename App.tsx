@@ -21,7 +21,7 @@ import {
   Colors,
 } from 'react-native/Libraries/NewAppScreen';
 
-import { sendMessage, watchEvents } from 'react-native-watch-connectivity';
+import { sendMessage, watchEvents, getIsPaired, getIsWatchAppInstalled } from 'react-native-watch-connectivity';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -31,6 +31,13 @@ function App(): React.JSX.Element {
   };
 
   React.useEffect(() => {
+    const init = async () => {
+      const isPaired = await getIsPaired();
+      const isWatchAppInstalled = await getIsWatchAppInstalled();
+      console.log('isPaired', isPaired);
+      console.log('isWatchAppInstalled', isWatchAppInstalled);
+    };
+    init();
     const unsubscribe = watchEvents.on('message', (e) => {
       console.log(e);
       Alert.alert('Message Received', `Action: ${e.action} \nData: ${JSON.stringify(e.data)}`);

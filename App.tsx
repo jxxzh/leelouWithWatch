@@ -6,7 +6,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ScrollView,
   StatusBar,
@@ -25,6 +25,8 @@ import { sendMessage, watchEvents, getIsPaired, getIsWatchAppInstalled } from 'r
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
+  const [isPaired, setIsPaired] = useState(false);
+  const [isWatchAppInstalled, setIsWatchAppInstalled] = useState(false);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -32,10 +34,11 @@ function App(): React.JSX.Element {
 
   React.useEffect(() => {
     const init = async () => {
-      const isPaired = await getIsPaired();
-      const isWatchAppInstalled = await getIsWatchAppInstalled();
-      console.log('isPaired', isPaired);
-      console.log('isWatchAppInstalled', isWatchAppInstalled);
+      const isPair = await getIsPaired();
+      const isWatchAppInstall = await getIsWatchAppInstalled();
+
+      setIsPaired(isPair);
+      setIsWatchAppInstalled(isWatchAppInstall);
     };
     init();
     const unsubscribe = watchEvents.on('message', (e) => {
@@ -89,13 +92,19 @@ function App(): React.JSX.Element {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <ScrollView
-        style={backgroundStyle}>
+      <ScrollView style={backgroundStyle}>
+        <View style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingTop: 100,
+        }}>
+          <Text>Is Paired: {isPaired ? 'Yes' : 'No'}</Text>
+          <Text>Is Watch App Installed: {isWatchAppInstalled ? 'Yes' : 'No'}</Text>
+        </View>
         <View style={{
           flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
-          paddingTop: 100,
         }}>
           <TouchableOpacity
             style={{

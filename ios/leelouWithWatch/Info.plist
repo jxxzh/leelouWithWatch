@@ -47,5 +47,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>WKCompanionAppBundleIdentifier</key>
+	<string>com.leelou.app</string>
 </dict>
 </plist>
